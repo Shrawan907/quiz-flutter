@@ -42,6 +42,31 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scorekeeper = [];
+  void checkAns(bool b){
+    if (!quizBrain.isFinished()) {
+      setState(() {
+        if(b == quizBrain.getAnswer())
+          scorekeeper.add( geticont() );
+        else
+          scorekeeper.add(
+              geticonf()
+          );
+        quizBrain.nextQ();
+
+      });
+    }
+    else{
+      setState(() {
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You have reached the end of quiz',
+        ).show();
+        quizBrain.reset();
+        scorekeeper = [];
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -78,20 +103,10 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                if(quizBrain.getQn() < quizBrain.length-1) {
-                  setState(() {
-                    if (quizBrain.getAnswer() == true)
-                      scorekeeper.add(
-                          geticont()
-                      );
-                    else
-                      scorekeeper.add(
-                          geticonf()
-                      );
-                    quizBrain.nextQ();
-                  });
+
+                    checkAns(true);
+
                 }
-              }
             ),
           ),
         ),
@@ -108,22 +123,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                if (quizBrain.getQn() < quizBrain.length-1) {
-                  setState(() {
-                    if (quizBrain.getAnswer() == false)
-                      scorekeeper.add(
-                          geticont()
-                      );
-                    else
-                      scorekeeper.add(
-                          geticonf()
-                      );
-                    quizBrain.nextQ();
-                  });
-                }
-                else{
-
-                }
+                checkAns(false);
               }
             ),
           ),
@@ -135,9 +135,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/

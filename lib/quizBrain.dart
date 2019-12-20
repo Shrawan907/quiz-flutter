@@ -32,10 +32,12 @@ class QuizBrain {
   ];
 
   int _qnumber = 0;
-  int length = 0;
 
-  QuizBrain(){
-    length = _questionsBank.length;
+  bool isFinished() {
+    if(_qnumber >= _questionsBank.length-1)
+      return true;
+    else
+      return false;
   }
 
   void nextQ() {
@@ -52,5 +54,9 @@ class QuizBrain {
   bool getAnswer(){
     print(_questionsBank[_qnumber].answer);
     return _questionsBank[_qnumber].answer;
+  }
+
+  void reset() {
+    _qnumber = 0;
   }
 }
